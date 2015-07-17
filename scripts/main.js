@@ -2,7 +2,7 @@
 
   var cancelFunc = null;
   var imageData = null;
-  var EXPOSE_TIME = 10;
+  var EXPOSE_TIME = 1;
   var lastTime = null;
 
   function startCapture() {
@@ -35,7 +35,9 @@
       imageData = new Float64Array(width*height*3);
     }
     for (var i = 0, len = data.length; i < len; ++i) {
-      imageData[i] = Math.min(255, imageData[i]+(frameTime/EXPOSE_TIME)*data[i]);
+      var scaler = (frameTime/EXPOSE_TIME);
+      imageData[i] *= 1-scaler;
+      imageData[i] += scaler*data[i];
     }
     var canvas = document.getElementById('canvas');
     canvas.width = width;
